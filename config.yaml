@@ -1,0 +1,55 @@
+Service:
+  RegionId: cn-hangzhou          # 服务部署的区域
+  DeployType: ros                # 部署类型，使用ROS（资源编排服务）
+  TenantType: SingleTenant       # 租户类型，单租户
+  DeployMetadata:                # 部署元数据配置
+    ServiceInstanceNameRule:     
+      Prefix: wp                 # 服务实例名称前缀
+    SupplierDeployMetadata:      # 供应商部署元数据
+      RoleName: ${RoleName}      # 使用的角色名称
+      UserType: Aliyun           # 用户类型，阿里云用户
+      SupplierTemplateConfigs:   # 供应商模板配置数组
+        - Name: 高可用版            # 模板名称
+          Url: 'templates/template.yaml'  # 模板文件的URL
+          PredefinedParameters: []  # 预定义参数列表
+          HiddenParameterKeys:      # 隐藏参数键列表
+            - VpcId
+            - VSwitchId
+            - ZoneId
+          ParameterMappings:        # 参数映射配置
+            - ParameterKey: RegionId
+              ParameterMappingKeys:  # 参数映射键
+                - VpcId
+                - ZoneId
+                - VSwitchId
+              ParameterValueMapping: # 参数值映射配置，指定区域的参数值
+                cn-hangzhou:
+                  Parameters:
+                    VpcId: ${VpcId}
+                    ZoneId: ${ZoneId}
+                    VSwitchId: ${VSwitchId}
+      FileArtifactRelation:       # 文件部署物关联配置
+        '{{ computenest::file::wordpress }}': # 文件部署物关联标识符。可以在templates/template.yaml中使用该标识符指定部署物
+          ArtifactId: ${Artifact.Artifact_1.ArtifactId}     # 文件部署物ID
+          ArtifactVersion: ${Artifact.Artifact_1.ArtifactVersion} # 文件部署物版本
+    TemplateConfigs:              # 模板配置数组
+      - Name: 高可用版
+        Url: templates/parameters.yaml  # 参数模板文件的URL
+        AllowedRegions:                 # 允许的区域列表
+          - cn-hangzhou
+  ServiceType: managed            # 服务类型，托管服务
+  ServiceInfo:                    # 服务信息配置
+    Locale: zh-CN                 # 本地化配置，中文
+    ShortDescription: WordPress demo  # 简短描述
+    Image: 'icons/service_logo.jpg'   # 服务图标
+    Name: WordPress托管版            # 服务名称
+  ShareType: Public               # 共享类型，公共
+  ApprovalType: Manual            # 审批类型，手动审批
+Artifact:                         # 部署物配置，配置后会构建出相应的计算巢部署物
+  Artifact_1:
+    ArtifactType: File            # 部署物类型，文件
+    ArtifactName: WordPress       # 部署物名称
+    Description: WordPress        # 描述
+    ArtifactProperty:             # 部署物属性配置
+      RegionId: cn-hangzhou       # 部署物所在区域
+      Url: 'artifacts/wordpress-6.2-zh_CN.tar.gz' # 部署物文件URL
