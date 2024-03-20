@@ -1,0 +1,52 @@
+openapi: 3.0.1
+info:
+  title: 天气四方通
+  description: 提供个性化的天气提醒服务
+  version: 1.0.0
+servers:
+  - url: http://www.weather.com.cn/weather/101010100.shtml
+paths:
+  /weather:
+    get:
+      summary: Get current weather information
+      description: Retrieves the current weather information based on the provided location.
+      operationId: getCurrentWeather
+      parameters:
+        - name: location
+          in: query
+          description: Location for which weather information is requested.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Current weather information retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeatherInfo'
+                
+components:
+  schemas:
+    WeatherInfo:
+      type: object
+      properties:
+        temperature:
+          type: number
+          description: Current temperature in Celsius.
+        humidity:
+          type: number
+          description: Current humidity level.
+        conditions:
+          type: string
+          description: Description of current weather conditions.
+        wind_speed:
+          type: number
+          description: Current wind speed in meters per second.
+        wind_direction:
+          type: string
+          description: Current wind direction.
+
+
+
+

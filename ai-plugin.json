@@ -1,0 +1,20 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "天气四方通",
+  "name_for_model": "weather_assissant",
+  "description_for_human": "个性化的天气助手，可以查看不同地区的天气情况",
+  "description_for_model": "帮助用户管理天气助手，可以增加、删除提醒地区",
+  "auth": {
+      "type": "none"
+  },
+  "api": {
+      "type": "openapi",
+      "url": "PLUGIN_HOST/openapi.yaml"
+  },
+  "logo_url": "https://img2.imgtp.com/2024/03/18/2osom3CQ.webp",
+  "contact_email": "support@example.com",
+  "legal_info_url": "http://www.example.com/legal",
+  "examples": {
+      "url": "PLUGIN_HOST/example.yaml"
+  }
+}
